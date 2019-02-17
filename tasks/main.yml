@@ -1,0 +1,39 @@
+---
+
+- import_tasks: install.yml
+  tags: wireguard.install
+
+- name: Setup interface and peers
+  template:
+    src: interface.conf.j2
+    dest: "/etc/wireguard/{{ wireguard_interface }}.conf"
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart wireguard
+  tags: wireguard.config
+
+- name: Enable IPv4 forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    reload: yes
+  tags: wireguard.config
+
+- name: Update /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^{{ hostvars[host]['wireguard_address'] }}"
+    line: "{{ hostvars[host]['wireguard_address'] }} {{ host }}"
+  with_items: "{{ groups[wireguard_group] }}"
+  loop_control:
+    loop_var: host
+  when: host != inventory_hostname and hostvars[host]['wireguard_address'] is defined
+  tags: wireguard.config
+
+- name: Enable and start WireGuard service
+  service:
+    name: "wg-quick@{{ wireguard_interface }}"
+    state: started
+    enabled: true
+  tags: wireguard.install

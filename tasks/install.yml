@@ -1,0 +1,22 @@
+---
+
+- name: Add sid repository for WireGuard
+  apt_repository:
+    repo: 'deb http://deb.debian.org/debian sid main'
+    filename: 'sid'
+  when: ansible_distribution == 'Debian'
+
+- name: Add APT-pinning for WireGuard on Sid
+  copy:
+    src: apt-preferences
+    dest: /etc/apt/preferences.d/wireguard
+  when: ansible_distribution == 'Debian'
+
+- name: Add WireGuard PPA
+  apt_repository:
+    repo: ppa:wireguard/wireguard
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install WireGuard
+  apt:
+    name: wireguard
