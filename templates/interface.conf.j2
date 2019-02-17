@@ -8,6 +8,6 @@ ListenPort = {{ wireguard_listen_port }}
 [Peer]
 PublicKey = {{ hostvars[host]['wireguard_public_key'] }}
 AllowedIps = {{ hostvars[host]['wireguard_address'] }}/32
-Endpoint = {{ hostvars[host]['ansible_facts']['default_ipv4']['address'] }}:{{ hostvars[host]['wireguard_listen_port'] }}
+Endpoint = {{ hostvars[host]['wireguard_endpoint'] | default(hostvars[host]['ansible_facts']['default_ipv4']['address']) }}:{{ hostvars[host]['wireguard_listen_port'] }}
 {% endif %}
 {% endfor %}

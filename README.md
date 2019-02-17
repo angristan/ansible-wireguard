@@ -15,6 +15,8 @@ echo "public key: $public_key"
 
 Then put these in `wireguard_public_key` and `wireguard_private_key` for each host (the use of *ansible-vault* is recommended).
 
+Bu default, the endpoint for each peer is its default IPv4 address from the Ansible facts. This can be overwritten with `wireguard_endpoint`.
+
 ## Example playbook
 
 In this example we'll use `host1` and `host2`, which are part of the `web` inventory group.
