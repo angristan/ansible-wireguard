@@ -20,6 +20,7 @@
 - name: Install Linux kernel headers
   apt:
     name: linux-headers-amd64
+  when: ansible_distribution == 'Debian'
 
 - name: Install WireGuard
   apt:
