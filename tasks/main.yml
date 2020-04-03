@@ -23,7 +23,7 @@
 - name: Update /etc/hosts
   lineinfile:
     dest: /etc/hosts
-    regexp: "^{{ hostvars[host]['wireguard_address'] }}"
+    regexp: "^{{ hostvars[host]['wireguard_address'] | regex_replace('\\.','\\\\.') }} "
     line: "{{ hostvars[host]['wireguard_address'] }} {{ host }}"
   with_items: "{{ groups[wireguard_group] }}"
   loop_control:
