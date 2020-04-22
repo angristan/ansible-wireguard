@@ -1,7 +1,5 @@
 # Ansible role for Wireguard
 
-[![CircleCI](https://circleci.com/gh/angristan/ansible-wireguard.svg?style=svg)](https://circleci.com/gh/angristan/ansible-wireguard)
-
 This role will install WireGuard from the Sid repo on Debian 9 and from the PPA on Ubuntu.
 
 The role's scope is an inventory group, from which it will define peers (see the example below).
