@@ -3,7 +3,13 @@
 - name: Add WireGuard PPA
   apt_repository:
     repo: ppa:wireguard/wireguard
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('20.04', '<')
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: "{{ wireguard_apt_cache_valid_time }}"
+  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
 
 - name: Install Linux kernel headers
   apt:
